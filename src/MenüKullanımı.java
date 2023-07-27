@@ -1,3 +1,18 @@
+
+import java.awt.Color;
+import java.awt.Font;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JColorChooser;
+import javax.swing.JFileChooser;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -27,7 +42,7 @@ public class MenüKullanımı extends javax.swing.JFrame {
 
         jMenuItem1 = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        yazı_alanı = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -44,11 +59,16 @@ public class MenüKullanımı extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        yazı_alanı.setColumns(20);
+        yazı_alanı.setRows(5);
+        jScrollPane1.setViewportView(yazı_alanı);
 
         jMenu3.setText("Dosya");
+        jMenu3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu3ActionPerformed(evt);
+            }
+        });
 
         jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem2.setText("Dosya Aç");
@@ -138,28 +158,91 @@ public class MenüKullanımı extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
+      JFileChooser fc = new JFileChooser();
+      
+      int i = fc.showOpenDialog(this);
+      
+        if (i ==JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            
+            try(Scanner scanner = new Scanner(new BufferedReader(new FileReader(file)))){
+                String icerik = "";
+                
+                while (scanner.hasNextLine()) {                    
+                   
+                    icerik += scanner.nextLine() +  "\n";
+                    
+                }
+                yazı_alanı.setText(icerik);
+            }
+            catch (FileNotFoundException ex) {
+              Logger.getLogger(MenüKullanımı.class.getName()).log(Level.SEVERE, null, ex);
+          }
+        }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        // TODO add your handling code here:
+       
+        JFileChooser fc = new JFileChooser();
+        
+        int cevap = fc.showSaveDialog(this);
+        
+        if (cevap == JFileChooser.APPROVE_OPTION) {
+            
+            String dosya_yolu = fc.getSelectedFile().getPath();
+            try(FileWriter writer = new FileWriter(dosya_yolu)){
+                
+                
+                writer.write(yazı_alanı.getText());
+                
+                
+            } catch (IOException ex) {
+                Logger.getLogger(MenüKullanımı.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+            
+            
+        }
+        
+        
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        // TODO add your handling code here:
+       
+        System.exit(0);
+        
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        // TODO add your handling code here:
+        
+        Color color = JColorChooser.showDialog(this, "Bir Renk Secin", Color.PINK);
+        
+        yazı_alanı.setForeground(color);
+        
+        
+        
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        // TODO add your handling code here:
+       
+        Font font = new Font("Ariel",Font.PLAIN,20) ;
+        
+        yazı_alanı.setFont(font);
+        
+        
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        // TODO add your handling code here:
+        
+        Font font = new Font("Times New Roman", Font.PLAIN,20);
+        
+        yazı_alanı.setFont(font);
     }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -210,6 +293,6 @@ public class MenüKullanımı extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea yazı_alanı;
     // End of variables declaration//GEN-END:variables
 }
